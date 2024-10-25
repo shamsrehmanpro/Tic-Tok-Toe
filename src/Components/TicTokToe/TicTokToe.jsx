@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import './TicTokToe.css'
 import circle_icon from '../Assetes/circle.png'
 import cross_icon from '../Assetes/cross.png'
 
-let data = ["","","","","","","","",""]
+
 
 const TicTokToe = () => {
+    let data = ["","","","","","","","",""]
     let [count, setCount] = useState(0)
     let [lock, setLock] = useState(false)
+    let titleRef = useRef(null)
 
     const toggle = (e, num) => {
         if (lock) {
@@ -16,12 +18,12 @@ const TicTokToe = () => {
         if ((count%2) === 0) {
             e.target.innerHTML = `<img src='${circle_icon}' alt="" />`
             data[num] = "X"
-            setCount(count++)
+            setCount(++count)
         }
         else{
             e.target.innerHTML = `<img src="${cross_icon}" alt="" />`
             data[num] = "O"
-            setCount(count++)
+            setCount(++count)
         }
         checkWin()
     }
@@ -55,30 +57,63 @@ const TicTokToe = () => {
 
     }
 
+
     const won = (winner) => {
-       return setLock(true)
+        setLock(true)
+        if (winner === "X") {
+            titleRef.current.innerHTML = `Congratulations: <img src="${cross_icon}`
+        }
+        else{
+            titleRef.current.innerHTML = `Congratulations: <img src="${circle_icon}`
+        }
     }
+
+    const box1 = useRef(null)
+    const box2 = useRef(null)
+    const box3 = useRef(null)
+    const box4 = useRef(null)
+    const box5 = useRef(null)
+    const box6 = useRef(null)
+    const box7 = useRef(null)
+    const box8 = useRef(null)
+    const box9 = useRef(null)
+
+    const box_array = [box1, box2, box3, box4, box5, box6, box7, box8, box9]
+
+    const reset = () => {
+        setLock(false)
+        setCount(0)
+        titleRef.current.innerHTML = "Tic Tok Toe Game In React"
+        data = ["","","","","","","","",""]
+        box_array.map((item) => {
+            item.current.innerHTML = ""
+        })
+
+    }
+
+    
+
   return (
     <div className='container'>
-        <h1 className="title">Tic Tok Toe Game In <span>React</span></h1>
+        <h1 ref={titleRef} className="title">Tic Tok Toe Game In <span>React</span></h1>
         <div className="board">
             <div className="row1">
-                <div className="boxes" onClick={(e) => {toggle(e, 1)}}></div>
-                <div className="boxes" onClick={(e) => {toggle(e, 2)}}></div>
-                <div className="boxes" onClick={(e) =>{ toggle(e, 3)}}></div>
+                <div ref={box1} className="boxes" onClick={(e) => {toggle(e, 1)}}></div>
+                <div ref={box2} className="boxes" onClick={(e) => {toggle(e, 2)}}></div>
+                <div ref={box3} className="boxes" onClick={(e) =>{ toggle(e, 3)}}></div>
             </div>
             <div className="row2">
-                <div className="boxes" onClick={(e) => {toggle(e, 4)}}></div>
-                <div className="boxes" onClick={(e) => {toggle(e, 5)}}></div>
-                <div className="boxes" onClick={(e) => {toggle(e, 6)}}></div>
+                <div ref={box4} className="boxes" onClick={(e) => {toggle(e, 4)}}></div>
+                <div ref={box5} className="boxes" onClick={(e) => {toggle(e, 5)}}></div>
+                <div ref={box6} className="boxes" onClick={(e) => {toggle(e, 6)}}></div>
             </div>
             <div className="row3">
-                <div className="boxes" onClick={(e) => {toggle(e, 7)}}></div>
-                <div className="boxes" onClick={(e) => {toggle(e, 8)}}></div>
-                <div className="boxes" onClick={(e) => {toggle(e, 9)}}></div>
+                <div ref={box7} className="boxes" onClick={(e) => {toggle(e, 7)}}></div>
+                <div ref={box8} className="boxes" onClick={(e) => {toggle(e, 8)}}></div>
+                <div ref={box9} className="boxes" onClick={(e) => {toggle(e, 9)}}></div>
             </div>
         </div>
-        <button className="reset">Reset</button>
+        <button className="reset" onClick={() => {reset()}}>Reset</button>
     </div>
   )
 }
